@@ -1,21 +1,39 @@
 package com.store.jewellry.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Entity
+@Data
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
+
+    @Column(unique = true)
     private String email;
     private String phone;
-    private String role="User";
+    private String role = "User";
 
-    public User() {}
+    public User() {
+    }
 
-    public User(Long id, String username, String password, String email) {
-        this.id = id;
+    public User(String username, String password, String email, String phone, String role) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.phone = phone;
+        this.role = role;
     }
+
     public Long getId() {
         return id;
     }
@@ -47,6 +65,7 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPhone() {
         return phone;
     }
@@ -54,7 +73,6 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
 
     public String getRole() {
         return role;

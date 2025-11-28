@@ -1,0 +1,36 @@
+package com.store.jewellry.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.store.jewellry.entity.LoginRequest;
+import com.store.jewellry.entity.Shop;
+import com.store.jewellry.entity.User;
+import com.store.jewellry.service.AuthService;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/auth")
+@RequiredArgsConstructor
+public class AuthController {
+    @Autowired
+    private AuthService authService;
+
+    @PostMapping("/register/user")
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        return ResponseEntity.ok(authService.registerUser(user));
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
+    }
+    // @PostMapping("/register/shop")
+    // public ResponseEntity<String> registerShop(@RequestBody Shop shop) {
+    //     return ResponseEntity.ok(authService.registerShop(shop));
+    // }
+}
