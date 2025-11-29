@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.store.jewellry.entity.LoginRequest;
-import com.store.jewellry.entity.Shop;
+import com.store.jewellry.dto.LoginRequest;
+import com.store.jewellry.dto.PasswordUpdateRequest;
 import com.store.jewellry.entity.User;
 import com.store.jewellry.service.AuthService;
 
@@ -29,8 +29,8 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
-    // @PostMapping("/register/shop")
-    // public ResponseEntity<String> registerShop(@RequestBody Shop shop) {
-    //     return ResponseEntity.ok(authService.registerShop(shop));
-    // }
+    @PostMapping("/update-password")
+    public ResponseEntity<?> updatePassword(@RequestBody PasswordUpdateRequest request) {
+        return ResponseEntity.ok(authService.updatePassword(request));
+    }
 }

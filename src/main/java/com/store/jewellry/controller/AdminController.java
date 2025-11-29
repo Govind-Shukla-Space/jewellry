@@ -29,4 +29,14 @@ public class AdminController {
     public ResponseEntity<?> getPendingShops() {
         return ResponseEntity.ok(adminService.getPendingShops());
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(adminService.getAllUsers());
+    }
+    
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllShops() {
+      return ResponseEntity.ok(adminService.getAllShops());
+    }
 }
