@@ -19,7 +19,7 @@ import com.store.jewellry.service.ShopService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 @RequestMapping("/api/shop")
 public class ShopController {
@@ -41,7 +41,7 @@ public class ShopController {
         return ResponseEntity.ok(shopService.getShopById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/approved")
     public ResponseEntity<?> getApprovedShops() {
         return ResponseEntity.ok(shopService.getApprovedShops());
@@ -53,7 +53,7 @@ public class ShopController {
         return ResponseEntity.ok(shopService.updateShop(id, shopDetails));
     }
     @PreAuthorize("hasRole('SHOP')")
-    @PostMapping("/update-password")
+    @PutMapping("/update-password")
     public ResponseEntity<?> updatePassword(@RequestBody PasswordUpdateRequest request) {
         return ResponseEntity.ok(shopService.updatePassword(request));
     }

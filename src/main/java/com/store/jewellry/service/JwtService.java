@@ -20,12 +20,10 @@ public class JwtService {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 
-    // Extract email/username
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Extract any claim
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
         Claims claims = Jwts
                 .parser()
@@ -37,21 +35,31 @@ public class JwtService {
         return resolver.apply(claims);
     }
 
-    // Generate JWT
-    public String generateToken(String email) {
+    private Claims extractAllClaims(String token) {
+        return Jwts
+                .parser()
+                .verifyWith(getSignKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
+    public String generateToken(String email, String role) {
         return Jwts.builder()
                 .subject(email)
+                .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 86400_000)) // 24 hours
+                .expiration(new Date(System.currentTimeMillis() + 86400_000))
                 .signWith(getSignKey())
                 .compact();
     }
-
-    // Validate JWT
     public boolean isTokenValid(String token, String email) {
         return email.equals(extractUserName(token)) && !isExpired(token);
     }
-
     public boolean isExpired(String token) {
         Date exp = extractClaim(token, Claims::getExpiration);
         return exp.before(new Date());

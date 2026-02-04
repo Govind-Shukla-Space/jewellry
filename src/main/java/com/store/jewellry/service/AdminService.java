@@ -25,6 +25,7 @@ public class AdminService {
     private AdminRepository adminRepository;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    
     public String registerAdmin(Admin admin) {
         if (adminRepository.findByEmail(admin.getEmail()).isPresent()) {
             return "Admin with this email already exists";
