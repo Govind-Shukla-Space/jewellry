@@ -4,6 +4,8 @@ import com.store.jewellry.dto.ProductRequest;
 import com.store.jewellry.entity.Product;
 import com.store.jewellry.service.ProductService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,19 +21,15 @@ import java.util.List;
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
-
+    @Autowired
     private final ProductService productService;
 
-    // Shop adds product
     @PreAuthorize("hasRole('SHOP')")
     @PostMapping(value = "/{shopId}/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Product> addProduct(
             @PathVariable Long shopId,
             @RequestPart("product") ProductRequest request,
             @RequestPart("file") MultipartFile file) throws IOException {
-
-        // ObjectMapper mapper = new ObjectMapper();
-        // ProductRequest request = mapper.readValue(productJson, ProductRequest.class);
 
         return ResponseEntity.ok(productService.addProduct(shopId, request, file));
     }
@@ -46,7 +44,7 @@ public class ProductController {
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<?> deleteProduct(
             @PathVariable Long productId,
-            Authentication auth) {
+            Authentication auth) throws IOException {
         String email = auth.getName(); // Logged-in shop email
         productService.deleteProduct(productId, email,auth);
 

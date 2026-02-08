@@ -29,6 +29,7 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+    
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody Admin admin) {
         return ResponseEntity.ok(adminService.registerAdmin(admin));
