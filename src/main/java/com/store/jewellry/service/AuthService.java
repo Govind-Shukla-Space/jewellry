@@ -45,6 +45,7 @@ public class AuthService {
         Optional<User> user = userRepository.findByEmail(request.getEmail());
         if (user.isPresent() && encoder.matches(request.getPassword(), user.get().getPassword())) {
             String token = jwtService.generateToken(user.get().getEmail(), "USER");
+            response.put("id", user.get().getId());
             response.put("message", "User login successful");
             response.put("role", "USER");
             response.put("email", user.get().getEmail());
@@ -61,7 +62,7 @@ public class AuthService {
             }
             
             String token = jwtService.generateToken(shop.get().getEmail(), "SHOP");
-            
+            response.put("id", shop.get().getId());
             response.put("message", "Shop login successful");
             response.put("role", "SHOP");
             response.put("email", shop.get().getEmail());
@@ -74,16 +75,13 @@ public class AuthService {
         if (admin.isPresent() && encoder.matches(request.getPassword(), admin.get().getPassword())) {
 
             String token = jwtService.generateToken(admin.get().getEmail(), "ADMIN");
-            
+            response.put("id", admin.get().getId());
             response.put("message", "Admin login successful");
             response.put("role", "ADMIN");
             response.put("email", admin.get().getEmail());
             response.put("token", token);
             return response;
         }
-        System.out.println("Shop details: "+shop);
-        System.out.println("user details: "+user);
-        System.out.println("admin details: "+admin);
         response.put("message", "INVALID_CREDENTIALS");
         return response;
     }

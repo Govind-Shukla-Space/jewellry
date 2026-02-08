@@ -1,23 +1,30 @@
 package com.store.jewellry.service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Service;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY = "mysecretkeymysecretkeymysecretkey123";
+    @Value("${jwt.secretkey}")
+    private String secretkey;
+    // private final String secretkey = "mysecretkeymysecretkeymysecretkey123";
+
+    @Value("${jwt.expiration}")
+    private long expiration;
 
     private SecretKey getSignKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        return Keys.hmacShaKeyFor(secretkey.getBytes(StandardCharsets.UTF_8));
     }
 
     public String extractUserName(String token) {
@@ -53,13 +60,15 @@ public class JwtService {
                 .subject(email)
                 .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 86400_000))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey())
                 .compact();
     }
+
     public boolean isTokenValid(String token, String email) {
         return email.equals(extractUserName(token)) && !isExpired(token);
     }
+
     public boolean isExpired(String token) {
         Date exp = extractClaim(token, Claims::getExpiration);
         return exp.before(new Date());

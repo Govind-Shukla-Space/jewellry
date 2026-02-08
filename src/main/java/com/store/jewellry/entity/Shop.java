@@ -1,10 +1,13 @@
 package com.store.jewellry.entity;
 
+import java.util.List;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -26,11 +29,14 @@ public class Shop {
     private String phone;
     private Boolean approved = false; 
     private String role = "SHOP";
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<Product> products; // One-to-many relationship with Product
     @Column(name = "image_url")
     private String imageUrl;
     public Shop() {
     }
-    public Shop(String shopName, String email, String password, String ownerName, String address, String phone, Boolean approved, String role,String imageUrl) {
+    public Shop(String shopName, String email, String password, String ownerName, String address, String phone, Boolean approved, String role,String imageUrl,List<Product> products) {
         this.shopName = shopName;
         this.email = email;
         this.password = password;
@@ -39,9 +45,12 @@ public class Shop {
         this.phone = phone;
         this.approved = approved;
         this.role = role;
+        this.products = products;
         this.imageUrl = imageUrl;
     }
-    
+    public Long getId() {
+        return id;
+    }   
     public String getShopName() {
         return shopName;
     }
@@ -95,5 +104,11 @@ public class Shop {
     }
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+    public List<Product> getProducts() {
+        return products;
+    }
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

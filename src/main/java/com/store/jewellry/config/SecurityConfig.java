@@ -1,5 +1,7 @@
 package com.store.jewellry.config;
 
+import java.util.List;
+import org.springframework.web.cors.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +42,8 @@ public class SecurityConfig {
                         "/api/shop/register")
                 .permitAll()
                 .requestMatchers("/images/**").permitAll()
+                .requestMatchers("/api/products/shop/**").permitAll()
+                .requestMatchers("/api/products/**").hasAnyRole("SHOP", "ADMIN")
                 .anyRequest().authenticated());
 
         http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -63,15 +67,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
-        org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
-        config.setAllowedOrigins(java.util.List.of("http://localhost:5173"));
-        config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(java.util.List.of("*"));
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowCredentials(true);
 
-        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        // use patterns instead of setAllowedOrigins when wildcards needed
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:5173",
+                "https://*.devtunnels.ms"));
+
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
+
 }

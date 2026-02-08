@@ -16,7 +16,6 @@ import com.store.jewellry.service.JwtService;
 
 import java.io.IOException;
 import java.util.List;
-
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -33,30 +32,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             chain.doFilter(req, res);
-            return; // No token → no authentication
+            return; // No token - no authentication
         }
 
         String token = authHeader.substring(7);
         String email = jwtService.extractUserName(token);
-        String role = jwtService.extractRole(token); // ★ GET ROLE FROM TOKEN
+        String role = jwtService.extractRole(token); // GET ROLE FROM TOKEN
 
-        // if (email != null && SecurityContextHolder.getContext().getAuthentication()
-        // == null) {
-
-        // // ★ Build a UserDetails object with ROLE from token
-        // UserDetails user = org.springframework.security.core.userdetails.User
-        // .withUsername(email)
-        // .password("")
-        // .roles(role)
-        // .build();
-        // UsernamePasswordAuthenticationToken authToken =
-        // new UsernamePasswordAuthenticationToken(
-        // user,
-        // null,
-        // user.getAuthorities()
-        // );
-        // SecurityContextHolder.getContext().setAuthentication(authToken);
-        // }
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);

@@ -1,7 +1,5 @@
 package com.store.jewellry.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +31,9 @@ public class Admin {
         this.role = role;
         this.imageUrl = imageUrl;
     }
-
+    public Long getId() {
+        return id;
+    }
     public String getEmail() {
         return email;
     }

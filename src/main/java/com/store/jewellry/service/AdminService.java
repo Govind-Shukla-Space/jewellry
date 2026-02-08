@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.store.jewellry.dto.PasswordUpdateRequest;
 import com.store.jewellry.entity.Admin;
+import com.store.jewellry.entity.Product;
 import com.store.jewellry.entity.Shop;
 import com.store.jewellry.entity.User;
 import com.store.jewellry.repository.AdminRepository;
+import com.store.jewellry.repository.ProductRepository;
 import com.store.jewellry.repository.ShopRepository;
 import com.store.jewellry.repository.UserRepository;
 
@@ -23,6 +25,8 @@ public class AdminService {
     private UserRepository userRepository;
     @Autowired
     private AdminRepository adminRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     
@@ -110,5 +114,8 @@ public class AdminService {
 
     public Admin getAdminImage(Long id) {
         return adminRepository.findById(id).orElseThrow();
+    }
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 }

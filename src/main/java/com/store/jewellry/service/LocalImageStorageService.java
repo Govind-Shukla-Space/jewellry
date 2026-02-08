@@ -6,12 +6,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Service
 public class LocalImageStorageService implements ImageStorageService {
+    @Value("${app.base-url}")
+    private String baseUrl;
+
+    @Value("${app.image-path}")
+    private String imagePath;
 
     private final String UPLOAD_DIR = "uploads/";
 
@@ -28,7 +33,6 @@ public class LocalImageStorageService implements ImageStorageService {
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        return "http://localhost:8080/images/" + fileName;
+        return baseUrl+imagePath + fileName;
     }
 }
-
