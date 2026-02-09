@@ -28,9 +28,9 @@ public class CookieUtil {
         cookie.setMaxAge((int) (jwtExpiration / 1000)); // Convert milliseconds to seconds
         
         // Set domain for cross-subdomain access if needed
-        if (!"localhost".equals(cookieDomain)) {
-            cookie.setDomain(cookieDomain);
-        }
+        // if (!"localhost".equals(cookieDomain)) {
+        //     cookie.setDomain(cookieDomain);
+        // }
         
         // SameSite=Lax for CSRF protection while allowing top-level navigation
         cookie.setAttribute("SameSite", "Lax");
