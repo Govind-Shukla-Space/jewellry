@@ -42,13 +42,13 @@ public class CookieUtil {
         cookie.setHttpOnly(true);
         cookie.setSecure(secure);
         cookie.setPath("/");
-        cookie.setMaxAge((int) (jwtExpiration / 1000));
+        cookie.setMaxAge((int)jwtExpiration);
         
-        if (!"localhost".equals(cookieDomain)) {
-            cookie.setDomain(cookieDomain);
-        }
+        // if (!"localhost".equals(cookieDomain)) {
+        //     cookie.setDomain(cookieDomain);
+        // }
         
-        cookie.setAttribute("SameSite", "Lax");
+        cookie.setAttribute("SameSite", "None");
         
         return cookie;
     }
@@ -63,9 +63,9 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setMaxAge(0); // Expire immediately
         
-        if (!"localhost".equals(cookieDomain)) {
-            cookie.setDomain(cookieDomain);
-        }
+        // if (!"localhost".equals(cookieDomain)) {
+        //     cookie.setDomain(cookieDomain);
+        // }
         
         return cookie;
     }
