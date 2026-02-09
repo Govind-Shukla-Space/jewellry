@@ -26,7 +26,7 @@ public class CookieUtil {
         cookie.setSecure(secure); // Only sent over HTTPS in production
         cookie.setPath("/");
         cookie.setMaxAge((int) (jwtExpiration / 1000)); // Convert milliseconds to seconds
-        
+        cookie.setAttribute("SameSite", "None"); // Allow cross-site cookies for subdomains (adjust as needed)
         // Set domain for cross-subdomain access if needed
         // if (!"localhost".equals(cookieDomain)) {
         //     cookie.setDomain(cookieDomain);
